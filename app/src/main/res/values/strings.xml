@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SSTestTask</string>
+    <string name="buttonSave">Save</string>
+    <string name="editFinish">Finish</string>
+    <string name="editStart">Start</string>
+    <string name="editDescription">Description</string>
+    <string name="editName">Name</string>
+    <string name="title_activity_nav">NavActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="add">add</string>
+    <string name="toast_data_update">Данные обновлены</string>
+</resources>

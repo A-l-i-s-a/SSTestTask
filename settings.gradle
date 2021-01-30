@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "SSTestTask_18_12_2020"

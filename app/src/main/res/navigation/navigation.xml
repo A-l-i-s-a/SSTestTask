@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/listTasksFragment">
+    <fragment
+        android:id="@+id/listTasksFragment"
+        android:name="com.ivlieva.sstesttask.ui.list_tasks.ListTasksFragment"
+        android:label="list_tasks_fragment"
+        tools:layout="@layout/list_tasks_fragment" >
+        <action
+            android:id="@+id/action_listTasksFragment_to_createTaskFragment"
+            app:destination="@id/createTaskFragment" />
+        <action
+            android:id="@+id/action_listTasksFragment_to_itemTaskFragment"
+            app:destination="@id/itemTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTaskFragment"
+        android:name="com.ivlieva.sstesttask.ui.create_task.CreateTaskFragment"
+        android:label="create_task_fragment"
+        tools:layout="@layout/create_task_fragment" />
+    <fragment
+        android:id="@+id/itemTaskFragment"
+        android:name="com.ivlieva.sstesttask.ui.item_task.ItemTaskFragment"
+        android:label="item_task_fragment"
+        tools:layout="@layout/item_task_fragment" />
+</navigation>

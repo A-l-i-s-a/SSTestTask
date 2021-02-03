@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 
 class RealmDataSource @Inject constructor() {
-    fun getTask(id: String): TaskCacheEntity {
+    fun getTaskById(id: Long): TaskCacheEntity {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
             .equalTo("id", id)

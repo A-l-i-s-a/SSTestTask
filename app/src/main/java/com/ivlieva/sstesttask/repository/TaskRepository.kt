@@ -36,6 +36,16 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun getTaskById(id: Long): Flow<DataState<Task>> = flow {
+        emit(DataState.Loading)
+        try {
+            val cacheTask = taskLocalDataSource.getTaskById(id)
+            emit(DataState.Success(cacheMapper.mapFromEntity(cacheTask)))
+        } catch (e: Exception) {
+            emit(DataState.Error(e))
+        }
+    }
+
     suspend fun getTasksByDate(date: Long): Flow<DataState<List<Task>>> = flow {
         emit(DataState.Loading)
         try {
@@ -48,14 +58,14 @@ class TaskRepository @Inject constructor(
     }
 
     suspend fun createTask(task: Task): Flow<DataState<Task>> = flow {
-        try {
+//        try {
             emit(DataState.Loading)
             task.id = setId()
             taskRemoteDataSource.saveTask(networkMapper.mapToEntity(task))
             taskLocalDataSource.saveTask(cacheMapper.mapToEntity(task))
             emit(DataState.Success(task))
-        } catch (e: Exception) {
-            emit(DataState.Error(e))
-        }
+//        } catch (e: Exception) {
+//            emit(DataState.Error(e))
+//        }
     }
 }

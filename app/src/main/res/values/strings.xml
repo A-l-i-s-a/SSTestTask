@@ -13,4 +13,5 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="add">add</string>
     <string name="toast_data_update">Данные обновлены</string>
+    <string name="delete_attach">Удалить</string>
 </resources>

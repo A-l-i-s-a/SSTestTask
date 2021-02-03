@@ -92,7 +92,7 @@ class ListTasksFragment : Fragment() {
             override fun onItemClick(task: Task) {
                 findNavController().navigate(
                     R.id.action_listTasksFragment_to_itemTaskFragment,
-                    bundleOf("title" to task.name, "description" to task.description)
+                    bundleOf("taskId" to task.id)
                 )
             }
         })

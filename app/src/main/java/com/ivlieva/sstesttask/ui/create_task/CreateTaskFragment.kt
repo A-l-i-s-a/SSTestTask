@@ -11,9 +11,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ivlieva.sstesttask.R
 import com.ivlieva.sstesttask.entyty.Task
+import com.ivlieva.sstesttask.ui.AttachAdapter
 import com.ivlieva.sstesttask.util.*
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +60,13 @@ class CreateTaskFragment : Fragment() {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         btn_attach.setOnClickListener { attach() }
+
+        attachRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        attachRecyclerView.adapter = AttachAdapter(attach, object : AttachAdapter.Listener {
+            override fun onItemClick(uri: Uri) {
+                TODO("Not yet implemented")
+            }
+        })
 
         var beginningTime: LocalTime = LocalTime.now()
         var endTime: LocalTime = LocalTime.now()

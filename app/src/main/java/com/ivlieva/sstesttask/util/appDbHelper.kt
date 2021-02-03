@@ -28,15 +28,8 @@ fun initFirebase() {
 }
 
 fun saveFile(uri: Uri): String {
-    var pathSaveFile = ""
     val path = REF_STORAGE_ROOT.child(FOLDER_FILES).child(uri.lastPathSegment.toString())
-    return path.downloadUrl.addOnSuccessListener{}.result.toString()
-}
-
-
-inline fun getUrlFromStorage(path: StorageReference, crossinline function: (url: String) -> Unit) {
-    /* Функция высшего порядка, получает  URL картинки из хранилища */
-    path.downloadUrl
-        .addOnSuccessListener { function(it.toString()) }
-        .addOnFailureListener { showToast(it.message.toString()) }
+    path.putFile(uri)
+        .addOnFailureListener { exception ->  showToast(exception.message.toString()) }
+    return path.path
 }

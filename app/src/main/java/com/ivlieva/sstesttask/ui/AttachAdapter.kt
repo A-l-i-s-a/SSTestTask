@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ivlieva.sstesttask.R
+import com.squareup.picasso.Picasso
 
 class AttachAdapter(private var list: List<Uri>, private val listener: Listener) :
     RecyclerView.Adapter<AttachAdapter.TasksViewHolder>() {
@@ -33,8 +34,11 @@ class AttachAdapter(private var list: List<Uri>, private val listener: Listener)
         fun bind(uri: Uri) {
 
             attachNameTextView.text = uri.lastPathSegment
-            if (uri.scheme.equals("img")) {
-                attachImageView.setImageURI(uri)
+            if (uri.scheme.equals("content")) {
+                println("content")
+//                Picasso.get().load(File(uri)).fit().into(attachImageView)
+            } else {
+                Picasso.get().load(uri).fit().into(attachImageView)
             }
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) listener.onItemClick(list[adapterPosition])

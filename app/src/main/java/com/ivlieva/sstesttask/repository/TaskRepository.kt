@@ -58,14 +58,14 @@ class TaskRepository @Inject constructor(
     }
 
     suspend fun createTask(task: Task): Flow<DataState<Task>> = flow {
-//        try {
+        try {
             emit(DataState.Loading)
             task.id = setId()
             taskRemoteDataSource.saveTask(networkMapper.mapToEntity(task))
             taskLocalDataSource.saveTask(cacheMapper.mapToEntity(task))
             emit(DataState.Success(task))
-//        } catch (e: Exception) {
-//            emit(DataState.Error(e))
-//        }
+        } catch (e: Exception) {
+            emit(DataState.Error(e))
+        }
     }
 }

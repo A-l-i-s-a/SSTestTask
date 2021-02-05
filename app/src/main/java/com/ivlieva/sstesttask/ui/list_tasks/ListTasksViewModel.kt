@@ -46,10 +46,6 @@ class ListTasksViewModel @ViewModelInject constructor(
             }
         }
     }
-
-    fun getTasksByData(date: Long) {
-
-    }
 }
 
 sealed class ListTasksStateEvent {
@@ -57,5 +53,6 @@ sealed class ListTasksStateEvent {
     object GetTaskByDateEvents : ListTasksStateEvent() {
         var date = Date().time
     }
+
     object None : ListTasksStateEvent()
 }

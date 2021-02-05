@@ -44,6 +44,7 @@ class RealmDataSource @Inject constructor() {
         createObject.dateStart = task.dateStart
         createObject.dateFinish = task.dateFinish
         createObject.description = task.description
+        createObject.attachmentsPath = task.attachmentsPath
     }
 
     fun saveTasks(tasks: List<TaskCacheEntity>) {

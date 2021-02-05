@@ -7,9 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ivlieva.sstesttask.R
 import com.ivlieva.sstesttask.entyty.Task
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
 
 
 class TasksAdapter(private var list: List<Task>, private val listener: Listener) :
@@ -17,7 +14,8 @@ class TasksAdapter(private var list: List<Task>, private val listener: Listener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return TasksViewHolder(inflater.inflate(R.layout.task_item, parent,false))
+        val view = inflater.inflate(R.layout.task_item, parent, false)
+        return TasksViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -28,7 +26,7 @@ class TasksAdapter(private var list: List<Task>, private val listener: Listener)
         holder.bind(list[position])
     }
 
-    inner class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val beginning = view.findViewById<TextView>(R.id.textViewTimeBeginning)
         private val end = view.findViewById<TextView>(R.id.textViewTimeEnd)
@@ -41,7 +39,9 @@ class TasksAdapter(private var list: List<Task>, private val listener: Listener)
             title.text = task.name
             description.text = task.description
             itemView.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) listener.onItemClick(list[adapterPosition])
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(list[adapterPosition])
+                }
             }
         }
     }

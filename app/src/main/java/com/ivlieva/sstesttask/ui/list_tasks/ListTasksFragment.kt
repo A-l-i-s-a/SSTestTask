@@ -17,7 +17,6 @@ import com.ivlieva.sstesttask.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.list_tasks_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.sql.Timestamp
 import java.util.*
 
 @AndroidEntryPoint
@@ -52,8 +51,10 @@ class ListTasksFragment : Fragment() {
         }
 
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_listTasksFragment_to_createTaskFragment,
-                bundleOf("date" to selectCalendar))
+            findNavController().navigate(
+                R.id.action_listTasksFragment_to_createTaskFragment,
+                bundleOf("date" to selectCalendar)
+            )
         }
     }
 
@@ -92,7 +93,7 @@ class ListTasksFragment : Fragment() {
             override fun onItemClick(task: Task) {
                 findNavController().navigate(
                     R.id.action_listTasksFragment_to_itemTaskFragment,
-                    bundleOf("taskId" to task.id)
+                    bundleOf("task" to task, "id" to task.id)
                 )
             }
         })

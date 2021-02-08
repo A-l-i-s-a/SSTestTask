@@ -1,11 +1,13 @@
 package com.ivlieva.sstesttask.ui.item_task
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,6 +19,7 @@ import com.ivlieva.sstesttask.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.item_task_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.io.File
 
 
 @AndroidEntryPoint
@@ -99,7 +102,16 @@ class ItemTaskFragment : Fragment() {
         attachTaskRecyclerView.adapter =
             AttachAdapter(task.attachments, object : AttachAdapter.Listener {
                 override fun onItemClick(uri: Uri) {
-                    println(uri)
+                    val photoURI = FileProvider.getUriForFile(
+                        context!!,
+                        context!!.applicationContext.packageName.toString() + ".provider",
+                        File(uri.path)
+                    )
+                    val intent = Intent()
+                    intent.action = Intent.ACTION_VIEW
+                    intent.setDataAndType(photoURI, "*/*")
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(intent)
                 }
             })
     }

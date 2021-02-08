@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/constraintLayout"
+        app:layout_anchorGravity="center">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -30,22 +32,13 @@
                 android:hint="@string/editName"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/editTextDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/editDescription"
-                android:inputType="textPersonName" />
-
             <TextView
                 android:id="@+id/editTextAddStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/editStart"/>
+                android:hint="@string/editStart" />
 
             <TextView
                 android:id="@+id/editTextAddFinishTime"
@@ -53,35 +46,42 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/editFinish"/>
+                android:hint="@string/editFinish" />
 
         </LinearLayout>
 
-        <ScrollView
+        <EditText
+            android:id="@+id/editTextDescription"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/editDescription"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toTopOf="@+id/btn_attach"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+        <Button
+            android:id="@+id/btn_attach"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add"
+            app:layout_constraintBottom_toTopOf="@+id/attachRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/attachRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/buttonSave"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            tools:ignore="MissingConstraints" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btn_attach"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/add" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/attachRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </ScrollView>
 
         <Button
             android:id="@+id/buttonSave"
@@ -105,5 +105,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/choice_upload"/>
+    <include layout="@layout/choice_upload" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

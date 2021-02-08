@@ -33,11 +33,8 @@ class AttachAdapter(private var list: List<Uri>, private val listener: Listener)
 
         fun bind(uri: Uri) {
 
-            attachNameTextView.text = uri.lastPathSegment
-            if (uri.scheme.equals("content")) {
-                println("content")
-//                Picasso.get().load(File(uri)).fit().into(attachImageView)
-            } else {
+            attachNameTextView.text = uri.lastPathSegment?.split("/")!!.last()
+            if (!uri.scheme.equals("content")) {
                 Picasso.get().load(uri).fit().into(attachImageView)
             }
             itemView.setOnClickListener {

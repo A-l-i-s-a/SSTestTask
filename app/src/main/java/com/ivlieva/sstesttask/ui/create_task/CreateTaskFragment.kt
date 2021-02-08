@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,7 +73,16 @@ class CreateTaskFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         attachRecyclerView.adapter = AttachAdapter(attach, object : AttachAdapter.Listener {
             override fun onItemClick(uri: Uri) {
-                TODO("Not yet implemented")
+                val photoURI = FileProvider.getUriForFile(
+                    context!!,
+                    context!!.applicationContext.packageName.toString() + ".provider",
+                    File(uri.path)
+                )
+                val intent = Intent()
+                intent.action = Intent.ACTION_VIEW
+                intent.setDataAndType(photoURI, "*/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(intent)
             }
         })
 
@@ -126,7 +136,7 @@ class CreateTaskFragment : Fragment() {
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val activityResult = CropImage.getActivityResult(data)
                     activityResult.uri.lastPathSegment?.let {
-                        doInBackground(activityResult.bitmap, it)?.let { it1 -> attach.add(it1) }
+                        attach.add(activityResult.uri)
                     }
                 }
                 PICK_FILE_REQUEST_CODE -> {

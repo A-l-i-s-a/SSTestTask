@@ -14,7 +14,6 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 class ListTasksViewModel @ViewModelInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
     private val taskRepository: TaskRepository
 ) : ViewModel() {
     private val _dataState: MutableLiveData<DataState<List<Task>>> = MutableLiveData()

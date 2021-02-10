@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class CreateTaskViewModel @ViewModelInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 

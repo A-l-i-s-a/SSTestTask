@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class ItemTaskViewModel @ViewModelInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
     private val taskRepository: TaskRepository
 ) : ViewModel() {
     private val _dataState: MutableLiveData<DataState<Task>> = MutableLiveData()

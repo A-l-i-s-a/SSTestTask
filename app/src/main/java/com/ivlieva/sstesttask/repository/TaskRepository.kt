@@ -49,7 +49,7 @@ class TaskRepository @Inject constructor(
     suspend fun getTasksByDate(date: Long): Flow<DataState<List<Task>>> = flow {
         emit(DataState.Loading)
         try {
-            val cacheTasks = taskLocalDataSource.getTaskByDate(date)
+            val cacheTasks = taskLocalDataSource.getTasksByDate(date)
             emit(DataState.Success(cacheMapper.mapFromEntityList(cacheTasks)))
         } catch (e: Exception) {
             emit(DataState.Error(e))

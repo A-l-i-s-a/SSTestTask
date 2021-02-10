@@ -1,33 +1,34 @@
 package com.ivlieva.sstesttask.repository.local_data_source.realm
 
+import com.ivlieva.sstesttask.repository.TaskDataSource
 import com.ivlieva.sstesttask.util.setId
 import io.realm.Realm
 import io.realm.RealmResults
 import javax.inject.Inject
 
 
-class RealmDataSource @Inject constructor() {
-    fun getTaskById(id: Long): TaskCacheEntity {
+class RealmDataSource @Inject constructor(): TaskDataSource<TaskCacheEntity> {
+    override fun getTaskById(id: Long): TaskCacheEntity {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
             .equalTo("id", id)
             .findFirst()!!
     }
 
-    fun getTaskByDate(date: Long): List<TaskCacheEntity> {
+    override fun getTasksByDate(date: Long): List<TaskCacheEntity> {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
             .between("dateStart", date, date + 24 * 60 * 60 * 1000)
             .findAll()
     }
 
-    fun getTasks(): List<TaskCacheEntity> {
+    override fun getTasks(): List<TaskCacheEntity> {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
             .findAll()
     }
 
-    fun saveTask(task: TaskCacheEntity) {
+    override suspend fun saveTask(task: TaskCacheEntity) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransaction {
             create(task, it)
@@ -47,7 +48,7 @@ class RealmDataSource @Inject constructor() {
         createObject.attachmentsPath = task.attachmentsPath
     }
 
-    fun saveTasks(tasks: List<TaskCacheEntity>) {
+    override fun saveTasks(tasks: List<TaskCacheEntity>) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransaction {
             for (task in tasks) {
@@ -57,7 +58,7 @@ class RealmDataSource @Inject constructor() {
         realm.close()
     }
 
-    fun deleteTask(task: TaskCacheEntity) {
+    override fun deleteTask(task: TaskCacheEntity) {
         Realm.getDefaultInstance().executeTransaction { realm ->
             val result: RealmResults<TaskCacheEntity> =
                 realm.where(TaskCacheEntity::class.java).equalTo("id", task.id).findAll()
@@ -65,7 +66,7 @@ class RealmDataSource @Inject constructor() {
         }
     }
 
-    fun deleteAllTasks() {
+    override fun deleteAllTasks() {
         Realm.getDefaultInstance().executeTransaction { realm ->
             val result: RealmResults<TaskCacheEntity> =
                 realm.where(TaskCacheEntity::class.java).findAll()

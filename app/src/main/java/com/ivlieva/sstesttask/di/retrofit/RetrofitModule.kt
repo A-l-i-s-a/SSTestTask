@@ -37,7 +37,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideBlogService(retrofit: Retrofit.Builder): TaskRemoteDataSource {
+    fun provideTaskRemoteDataSourceService(retrofit: Retrofit.Builder): TaskRemoteDataSource {
         return retrofit
             .build()
             .create(TaskRemoteDataSource::class.java)

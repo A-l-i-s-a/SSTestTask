@@ -12,5 +12,6 @@ data class Task(
     var dateFinish: Timestamp? = null,
     var name: String = "",
     var description: String = "",
-    var attachments: List<Uri> = listOf()
+    var attachments: List<Uri> = listOf(),
+    var isNeedSynchronization: Boolean = false
 ) : Parcelable

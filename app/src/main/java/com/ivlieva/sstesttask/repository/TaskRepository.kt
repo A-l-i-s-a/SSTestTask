@@ -7,6 +7,7 @@ import com.ivlieva.sstesttask.repository.remote_data_source.retrofit.NetworkMapp
 import com.ivlieva.sstesttask.repository.remote_data_source.retrofit.TaskRemoteDataSource
 import com.ivlieva.sstesttask.util.DataState
 import com.ivlieva.sstesttask.util.setId
+import com.ivlieva.sstesttask.util.showToast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -53,7 +54,6 @@ class TaskRepository @Inject constructor(
             emit(DataState.Success(cacheMapper.mapFromEntityList(cacheTasks)))
         } catch (e: Exception) {
             emit(DataState.Error(e))
-
         }
     }
 
@@ -61,11 +61,42 @@ class TaskRepository @Inject constructor(
         try {
             emit(DataState.Loading)
             task.id = setId()
-            taskRemoteDataSource.saveTask(networkMapper.mapToEntity(task))
+            try {
+                taskRemoteDataSource.saveTask(networkMapper.mapToEntity(task))
+            } catch (ex: java.lang.Exception) {
+                showToast("Проблема с подключением к интернету")
+                task.isNeedSynchronization = true
+            }
+
             taskLocalDataSource.saveTask(cacheMapper.mapToEntity(task))
             emit(DataState.Success(task))
         } catch (e: Exception) {
             emit(DataState.Error(e))
+        }
+    }
+
+    suspend fun synchronization(): Flow<DataState<List<Task>>> = flow {
+        emit(DataState.Loading)
+        try {
+            val cacheTasks = taskLocalDataSource.getTasksByIsNeedSynchronization()
+            for (task in cacheTasks) {
+                try {
+                    taskRemoteDataSource.saveTask(
+                        networkMapper.mapToEntity(
+                            cacheMapper.mapFromEntity(
+                                task
+                            )
+                        )
+                    )
+                    task.isNeedSynchronization = false
+                    taskLocalDataSource.saveTask(task)
+                } catch (ex: java.lang.Exception) {
+                }
+            }
+            emit(DataState.Success(cacheMapper.mapFromEntityList(cacheTasks)))
+        } catch (e: Exception) {
+            emit(DataState.Error(e))
+
         }
     }
 }

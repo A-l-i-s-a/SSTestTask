@@ -19,12 +19,21 @@ class RealmDataSource @Inject constructor(): TaskDataSource<TaskCacheEntity> {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
             .between("dateStart", date, date + 24 * 60 * 60 * 1000)
+            .sort("dateStart")
+            .findAll()
+    }
+
+    fun getTasksByIsNeedSynchronization(): List<TaskCacheEntity> {
+        return Realm.getDefaultInstance()
+            .where<TaskCacheEntity>(TaskCacheEntity::class.java)
+            .equalTo("isNeedSynchronization", true)
             .findAll()
     }
 
     override fun getTasks(): List<TaskCacheEntity> {
         return Realm.getDefaultInstance()
             .where<TaskCacheEntity>(TaskCacheEntity::class.java)
+            .sort("dateStart")
             .findAll()
     }
 
@@ -46,6 +55,7 @@ class RealmDataSource @Inject constructor(): TaskDataSource<TaskCacheEntity> {
         createObject.dateFinish = task.dateFinish
         createObject.description = task.description
         createObject.attachmentsPath = task.attachmentsPath
+        createObject.isNeedSynchronization = task.isNeedSynchronization
     }
 
     override fun saveTasks(tasks: List<TaskCacheEntity>) {

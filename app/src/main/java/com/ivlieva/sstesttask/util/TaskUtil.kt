@@ -3,9 +3,12 @@ package com.ivlieva.sstesttask.util
 import android.text.Editable
 import com.ivlieva.sstesttask.repository.local_data_source.realm.TaskCacheEntity
 import io.realm.Realm
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.OffsetDateTime
+import java.util.*
 
 fun setId(): Long {
     return try {
@@ -30,6 +33,11 @@ fun formatTime(time: LocalTime): String {
         time.hour,
         time.minute
     )
+}
+
+fun formatTime(time: Timestamp): String {
+    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return timeFormat.format(time)
 }
 
 fun formatDateTime(dateTime: OffsetDateTime): String {

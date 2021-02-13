@@ -20,7 +20,8 @@ constructor() :
             description = entity.description,
             dateStart = entity.dateStart?.let { Timestamp(it) },
             dateFinish = entity.dateFinish?.let { Timestamp(it) },
-            attachments = attachments
+            attachments = attachments,
+            isNeedSynchronization = entity.isNeedSynchronization
         )
     }
 
@@ -32,7 +33,8 @@ constructor() :
             description = domainModel.description,
             dateStart = domainModel.dateStart?.time,
             dateFinish = domainModel.dateFinish?.time,
-            attachmentsPath = RealmList(*map)
+            attachmentsPath = RealmList(*map),
+            isNeedSynchronization = domainModel.isNeedSynchronization
 
         )
     }

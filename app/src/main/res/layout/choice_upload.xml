@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:id="@+id/bottom_sheet_choice"
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_sheet_height"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:behavior_hideable = "true"
-    app:behavior_peekHeight = "0dp"
-    android:id="@+id/bottom_sheet_choice"
-    android:background="@color/colorAccent">
+    android:background="@color/colorAccent"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
         android:id="@+id/btn_attach_image"

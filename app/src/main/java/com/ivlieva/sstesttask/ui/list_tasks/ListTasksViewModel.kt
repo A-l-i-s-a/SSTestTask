@@ -38,6 +38,9 @@ class ListTasksViewModel @ViewModelInject constructor(
                         }
                         .launchIn(viewModelScope)
                 }
+                is ListTasksStateEvent.Synchronization -> {
+                    taskRepository.synchronization().launchIn(viewModelScope)
+                }
                 is ListTasksStateEvent.None -> {
                     //
                 }
@@ -52,6 +55,6 @@ sealed class ListTasksStateEvent {
     object GetTaskByDateEvents : ListTasksStateEvent() {
         var date = Date().time
     }
-
+    object Synchronization : ListTasksStateEvent()
     object None : ListTasksStateEvent()
 }

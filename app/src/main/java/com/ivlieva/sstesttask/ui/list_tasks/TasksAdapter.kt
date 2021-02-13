@@ -1,15 +1,21 @@
 package com.ivlieva.sstesttask.ui.list_tasks
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ivlieva.sstesttask.R
 import com.ivlieva.sstesttask.entyty.Task
+import com.ivlieva.sstesttask.util.formatTime
 
 
-class TasksAdapter(private var list: List<Task>, private val listener: Listener) :
+class TasksAdapter(
+    private var list: List<Task>,
+    private val listener: Listener
+) :
     RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
@@ -32,12 +38,14 @@ class TasksAdapter(private var list: List<Task>, private val listener: Listener)
         private val end = view.findViewById<TextView>(R.id.textViewTimeEnd)
         private val title = view.findViewById<TextView>(R.id.textViewTitle)
         private val description = view.findViewById<TextView>(R.id.textViewDescription)
+        private val isNeedSynchronization = view.findViewById<ImageView>(R.id.isNeedSynchronizationImageView)
 
         fun bind(task: Task) {
-            beginning.text = task.dateStart.toString()
-            end.text = task.dateFinish.toString()
+            beginning.text = task.dateStart?.let { formatTime(it) }
+            end.text = task.dateFinish?.let { formatTime(it) }
             title.text = task.name
             description.text = task.description
+            isNeedSynchronization.visibility = if (task.isNeedSynchronization) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     listener.onItemClick(list[adapterPosition])

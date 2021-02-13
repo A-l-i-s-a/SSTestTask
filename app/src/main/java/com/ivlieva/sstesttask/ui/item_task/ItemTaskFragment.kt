@@ -16,6 +16,7 @@ import com.ivlieva.sstesttask.R
 import com.ivlieva.sstesttask.entyty.Task
 import com.ivlieva.sstesttask.ui.AttachAdapter
 import com.ivlieva.sstesttask.util.DataState
+import com.ivlieva.sstesttask.util.formatTime
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.item_task_fragment.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,12 +46,6 @@ class ItemTaskFragment : Fragment() {
         attachTaskRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val bundle: Bundle? = arguments
-//        val task: Task
-//        if (bundle != null) {
-//            task = bundle.get("task") as Task
-//            setFieldTask(task)
-//            setAdapter(task)
-//        }
         if (bundle != null) {
             viewModel.getCurrentTask(bundle.getLong("id"))
         }
@@ -58,7 +53,7 @@ class ItemTaskFragment : Fragment() {
 
     private fun setFieldTask(task: Task) {
         textViewTaskTitle.text = task.name
-        val taskDate = task.dateStart.toString() + " - " + task.dateFinish.toString()
+        val taskDate = task.dateStart?.let { formatTime(it) } + " - " + task.dateFinish?.let { formatTime(it) }
         textViewTaskDate.text = taskDate
         textViewTaskDescription.text = task.description
     }
@@ -102,16 +97,20 @@ class ItemTaskFragment : Fragment() {
         attachTaskRecyclerView.adapter =
             AttachAdapter(task.attachments, object : AttachAdapter.Listener {
                 override fun onItemClick(uri: Uri) {
-                    val photoURI = FileProvider.getUriForFile(
-                        context!!,
-                        context!!.applicationContext.packageName.toString() + ".provider",
-                        File(uri.path)
-                    )
-                    val intent = Intent()
-                    intent.action = Intent.ACTION_VIEW
-                    intent.setDataAndType(photoURI, "*/*")
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    startActivity(intent)
+                    try {
+                        val newURI = FileProvider.getUriForFile(
+                            context!!,
+                            context!!.applicationContext.packageName.toString() + ".provider",
+                            File(uri.path)
+                        )
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_VIEW
+                        intent.setDataAndType(newURI, "*/*")
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        startActivity(intent)
+                    } catch (e: IllegalArgumentException) {
+                        displayError(e.localizedMessage)
+                    }
                 }
             })
     }

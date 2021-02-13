@@ -11,6 +11,7 @@
         android:layout_width="89dp"
         android:layout_height="48dp"
         android:text="@string/delete_attach"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/attachImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

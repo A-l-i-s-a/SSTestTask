@@ -1,9 +1,7 @@
 package com.ivlieva.sstesttask.ui.create_task
 
 import android.app.TimePickerDialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -25,14 +22,9 @@ import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.add_task_fragment.*
 import kotlinx.android.synthetic.main.choice_upload.*
-import kotlinx.android.synthetic.main.create_task_fragment.buttonSave
-import kotlinx.android.synthetic.main.create_task_fragment.editTextDescription
-import kotlinx.android.synthetic.main.create_task_fragment.editTextTitle
-import kotlinx.android.synthetic.main.create_task_fragment.progressBar2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
-import java.io.FileOutputStream
-import java.lang.ref.WeakReference
+import java.lang.IllegalArgumentException
 import java.sql.Timestamp
 import java.time.LocalTime
 import java.util.*
@@ -73,16 +65,20 @@ class CreateTaskFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         attachRecyclerView.adapter = AttachAdapter(attach, object : AttachAdapter.Listener {
             override fun onItemClick(uri: Uri) {
-                val photoURI = FileProvider.getUriForFile(
-                    context!!,
-                    context!!.applicationContext.packageName.toString() + ".provider",
-                    File(uri.path)
-                )
-                val intent = Intent()
-                intent.action = Intent.ACTION_VIEW
-                intent.setDataAndType(photoURI, "*/*")
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivity(intent)
+                try {
+                    val newURI = FileProvider.getUriForFile(
+                        context!!,
+                        context!!.applicationContext.packageName.toString() + ".provider",
+                        File(uri.path)
+                    )
+                    val intent = Intent()
+                    intent.action = Intent.ACTION_VIEW
+                    intent.setDataAndType(newURI, "*/*")
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(intent)
+                } catch (e: IllegalArgumentException) {
+                    displayError(e.localizedMessage)
+                }
             }
         })
 
@@ -104,9 +100,7 @@ class CreateTaskFragment : Fragment() {
                 run {
                     endTime = time
                     editTextAddFinishTime.text = formatTime(endTime)
-
                 }
-
             }
         }
     }
@@ -142,31 +136,11 @@ class CreateTaskFragment : Fragment() {
                 PICK_FILE_REQUEST_CODE -> {
                     val uri = data.data
                     uri?.let {
-                        attach.add(it)
+                        attach.add(getUriFile(uri))
                     }
                 }
             }
         }
-    }
-
-    private fun doInBackground(bitmap: Bitmap, nameFile: String): Uri? {
-        val mContext: WeakReference<Context?> = WeakReference(context)
-        mContext.get()?.let {
-            try {
-                var file = it.getDir("Images", Context.MODE_PRIVATE)
-                file = File(file, "$nameFile.jpg")
-
-                val out = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
-                out.flush()
-                out.close()
-                return file.toUri()
-//                Log.i("Seiggailion", "Image saved.")
-            } catch (e: Exception) {
-                displayError(e.message)
-            }
-        }
-        return null
     }
 
     private fun subscribeObservers() {

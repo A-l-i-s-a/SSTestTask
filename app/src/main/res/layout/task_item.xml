@@ -18,12 +18,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
@@ -54,20 +54,38 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
-                    <TextView
-                        android:id="@+id/textViewTitle"
-                        style="@style/Title"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="headline" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewTitle"
+                            style="@style/Title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            tools:text="headline" />
+
+                        <ImageView
+                            android:id="@+id/isNeedSynchronizationImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_baseline_cloud_off_24" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textViewDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:ellipsize="end"
                         android:maxLines="2"
                         tools:text="description" />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

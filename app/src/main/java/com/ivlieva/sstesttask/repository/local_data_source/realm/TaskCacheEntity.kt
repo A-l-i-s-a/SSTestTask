@@ -11,5 +11,6 @@ open class TaskCacheEntity(
     var dateFinish: Long? = null,
     var name: String = "",
     var description: String = "",
-    var attachmentsPath: RealmList<String?> = RealmList()
+    var attachmentsPath: RealmList<String?> = RealmList(),
+    var isNeedSynchronization: Boolean = false
 ) : RealmObject()
